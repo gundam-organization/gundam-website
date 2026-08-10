@@ -1,0 +1,11 @@
+{
+  "name": "GUNDAM Collaboration",
+  "short_name": "GUNDAM",
+  "description": "Generalized and Unified Neutrino Data Analysis Methods",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2d1d59",
+  "icons": []
+}
+

@@ -1,0 +1,9 @@
+{
+  "name": "gundam-collaboration-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static GitHub Pages website for the GUNDAM collaboration",
+  "scripts": {
+    "dev": "python3 scripts/dev-server.py"
+  }
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gundam-organization.github.io/gundam-website/sitemap.xml

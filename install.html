@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Requirements and installation instructions for GUNDAM.">
+  <meta name="theme-color" content="#2d1d59">
+  <title>How to Install | GUNDAM</title>
+  <link rel="canonical" href="https://gundam-organization.github.io/gundam-website/install.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="install">
+  <header class="site-header" id="site-header"></header>
+  <div class="site-layout">
+    <aside class="section-navigation" id="section-navigation"></aside>
+    <main class="main-content" id="main-content">
+      <div class="content-wrap">
+        <header class="page-hero">
+          <p class="page-kicker">Getting started</p>
+          <h1>How to Install</h1>
+          <p>Build a tagged GUNDAM release with its submodules and connect it to your local ROOT environment.</p>
+        </header>
+
+        <section class="content-section" id="requirements">
+          <p class="eyebrow">Requirements</p>
+          <h2>Before you build</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Dependency</th><th>Requirement</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>CMake</td><td>3.12 or newer</td><td>Used to configure and generate the build.</td></tr>
+                <tr><td>C++ compiler</td><td>C++14 minimum; C++17 preferred</td><td>GCC 8+ or Clang 9+ is recommended.</td></tr>
+                <tr><td>ROOT</td><td>ROOT 6</td><td>Build ROOT with C++14 or a later standard compatible with GUNDAM.</td></tr>
+                <tr><td>JSON</td><td>JSON for Modern C++</td><td>Provided through the project dependency setup.</td></tr>
+                <tr><td>YAML</td><td>yaml-cpp</td><td>Used for configuration input.</td></tr>
+                <tr><td>Git</td><td>Modern Git recommended</td><td>Required for cloning and updating submodules.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="content-section" id="quick-start">
+          <p class="eyebrow">Quick Start</p>
+          <h2>Clone a complete working tree</h2>
+          <p>Clone the official repository recursively so all required submodules are present:</p>
+          <pre><code>cd "$REPO_DIR"
+git clone --recurse-submodules https://github.com/gundam-organization/gundam.git
+cd gundam
+./update.sh --latest</code></pre>
+          <div class="callout"><p><strong>Recommended:</strong> Use the latest tagged release for analysis work. Running <code>./update.sh --latest</code> selects that release and updates its submodules.</p></div>
+        </section>
+
+        <section class="content-section" id="standard-build">
+          <p class="eyebrow">Standard Build</p>
+          <h2>Configure, compile, and install</h2>
+          <p>GUNDAM follows a conventional CMake workflow. The exact options depend on your ROOT installation and target system.</p>
+          <pre><code>export REPO_DIR="$HOME/Repositories"
+export BUILD_DIR="$HOME/Build"
+export INSTALL_DIR="$HOME/Install"
+
+mkdir -p "$REPO_DIR" "$BUILD_DIR" "$INSTALL_DIR"
+cd "$BUILD_DIR"
+
+cmake -S "$REPO_DIR/gundam" \
+      -B "$BUILD_DIR/gundam" \
+      -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR/gundam"
+
+cmake --build "$BUILD_DIR/gundam" --parallel
+cmake --install "$BUILD_DIR/gundam"</code></pre>
+          <p>After installation, configure your shell environment:</p>
+          <pre><code>source "$INSTALL_DIR/gundam/setup.sh"</code></pre>
+        </section>
+
+        <section class="content-section" id="development-setup">
+          <p class="eyebrow">Development Setup</p>
+          <h2>Use the project development helpers</h2>
+          <p>The repository includes a setup optimized for maintaining multiple builds or feature branches:</p>
+          <pre><code>cd "$REPO_DIR/gundam"
+source "$ROOTSYS/bin/thisroot.sh"
+source ./cmake/scripts/gundam-setup.sh
+gundam-build</code></pre>
+          <p>This defines <code>GUNDAM_ROOT</code> and a machine-specific <code>GUNDAM_TARGET</code>. You can override build and install locations with <code>GUNDAM_BUILD</code> and <code>GUNDAM_INSTALL</code>, and set build parallelism with <code>GUNDAM_JOBS</code>.</p>
+        </section>
+
+        <section class="content-section" id="platform-guides">
+          <p class="eyebrow">Platform Guides</p>
+          <h2>Environment-specific instructions</h2>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnMacOs.md" target="_blank" rel="noopener noreferrer"><h3>macOS</h3><p>Compiler, ROOT, and local build guidance.</p><span class="link-label">Open guide</span></a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnHpc.md" target="_blank" rel="noopener noreferrer"><h3>HPC</h3><p>Guidance for shared high-performance systems.</p><span class="link-label">Open guide</span></a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnLXPLUS.md" target="_blank" rel="noopener noreferrer"><h3>LXPLUS</h3><p>Setup for CERN computing environments.</p><span class="link-label">Open guide</span></a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnCCLyon.md" target="_blank" rel="noopener noreferrer"><h3>CC-IN2P3</h3><p>Setup notes for the Lyon computing centre.</p><span class="link-label">Open guide</span></a>
+          </div>
+        </section>
+
+        <section class="content-section" id="troubleshooting">
+          <p class="eyebrow">Troubleshooting</p>
+          <h2>Common installation checks</h2>
+          <ul>
+            <li>Confirm that <code>root-config --cflags</code> reports a C++ standard compatible with the GUNDAM build.</li>
+            <li>Run <code>git submodule update --init --recursive</code> if a dependency directory is missing.</li>
+            <li>Delete only the affected build directory—not the source tree—before retrying a clean CMake configure.</li>
+            <li>Include the compiler, ROOT version, CMake command, and complete error output when opening an issue.</li>
+          </ul>
+          <div class="button-row"><a class="button secondary" href="contact.html">Get support</a></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>

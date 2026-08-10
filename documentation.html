@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GUNDAM user, configuration, application, and developer documentation.">
+  <meta name="theme-color" content="#2d1d59">
+  <title>Documentation | GUNDAM</title>
+  <link rel="canonical" href="https://gundam-organization.github.io/gundam-website/documentation.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="documentation">
+  <header class="site-header" id="site-header"></header>
+  <div class="site-layout">
+    <aside class="section-navigation" id="section-navigation"></aside>
+    <main class="main-content" id="main-content">
+      <div class="content-wrap">
+        <header class="page-hero">
+          <p class="page-kicker">Reference</p>
+          <h1>Documentation</h1>
+          <p>Find the user guide, configuration reference, developer material, and answers to common questions.</p>
+        </header>
+
+        <section class="content-section" id="user-guide">
+          <p class="eyebrow">User Guide</p>
+          <h2>From installation to analysis output</h2>
+          <p>The user guide introduces GUNDAM, covers installation, explains how to run the applications, and connects each workflow to the detailed configuration reference.</p>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/introduction.md" target="_blank" rel="noopener noreferrer"><h3>Introduction</h3><p>Purpose, concepts, and framework orientation.</p><span class="link-label">Read introduction</span></a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/GettingStarted.md" target="_blank" rel="noopener noreferrer"><h3>Getting Started</h3><p>Installation and first-use guidance.</p><span class="link-label">Open guide</span></a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/usage.md" target="_blank" rel="noopener noreferrer"><h3>Run GUNDAM</h3><p>Application execution and common workflows.</p><span class="link-label">Read usage guide</span></a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/tree/main/docs" target="_blank" rel="noopener noreferrer"><h3>All Documentation</h3><p>Browse the complete documentation source tree.</p><span class="link-label">Browse files</span></a>
+          </div>
+        </section>
+
+        <section class="content-section" id="configuration-reference">
+          <p class="eyebrow">Configuration Reference</p>
+          <h2>Describe every part of the job</h2>
+          <p>Top-level configuration connects the fitter engine, likelihood interface, minimizer, samples, parameter sets, output behavior, and version requirements. Included YAML files allow each concern to remain independently reviewable.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Top-level option</th><th>Role</th></tr></thead>
+              <tbody>
+                <tr><td><code>fitterEngineConfig</code></td><td>Configures the fitting engine and its components.</td></tr>
+                <tr><td><code>minGundamVersion</code></td><td>Stops the job when the active GUNDAM version is too old for the configuration.</td></tr>
+                <tr><td><code>outputFolder</code></td><td>Selects the directory where output is written.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="button-row"><a class="button secondary" href="https://github.com/gundam-organization/gundam/blob/main/docs/configuration/TopLevel.md" target="_blank" rel="noopener noreferrer">Open configuration reference</a></div>
+        </section>
+
+        <section class="content-section" id="applications">
+          <p class="eyebrow">Applications</p>
+          <h2>Tools for fitting and validation</h2>
+          <p>Application-specific documentation should be read together with the configuration used for a study. Always match documentation to the installed GUNDAM tag, because command-line options and configuration fields can evolve between releases.</p>
+          <div class="callout"><p><strong>Version discipline:</strong> Record the exact release or commit SHA in analysis notes and generated artifacts. A configuration file alone does not fully identify the software environment.</p></div>
+        </section>
+
+        <section class="content-section" id="developers">
+          <p class="eyebrow">For Developers</p>
+          <h2>Build changes that others can reuse</h2>
+          <p>Development takes place on focused branches and is reviewed through pull requests. New behavior should arrive with documentation, tests or validation material, and a clear explanation of any configuration changes.</p>
+          <div class="button-row">
+            <a class="button secondary" href="https://github.com/gundam-organization/gundam/blob/main/docs/forDevelopers.md" target="_blank" rel="noopener noreferrer">Developer guide</a>
+            <a class="button secondary" href="collaboration.html#development">Development policy</a>
+          </div>
+        </section>
+
+        <section class="content-section" id="faq">
+          <p class="eyebrow">FAQs</p>
+          <h2>Common analysis questions</h2>
+          <p>The FAQ collects practical guidance on installation, configuration, minimization, convergence, spline behavior, and diagnostic interpretation.</p>
+          <div class="button-row"><a class="button secondary" href="https://github.com/gundam-organization/gundam/blob/main/docs/faq.md" target="_blank" rel="noopener noreferrer">Read the FAQs</a></div>
+        </section>
+
+        <section class="content-section" id="resources">
+          <p class="eyebrow">Resources</p>
+          <h2>Source-controlled supporting material</h2>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam/tree/main/resources" target="_blank" rel="noopener noreferrer"><h3>Repository Resources</h3><p>Examples, images, and supporting material distributed with the code.</p><span class="link-label">Browse resources</span></a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial" target="_blank" rel="noopener noreferrer"><h3>Input Tutorials</h3><p>Maintained example inputs for learning and validation.</p><span class="link-label">Browse tutorials</span></a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>

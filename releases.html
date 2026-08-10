@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GUNDAM releases, version selection, and upgrade guidance.">
+  <meta name="theme-color" content="#2d1d59">
+  <title>Releases | GUNDAM</title>
+  <link rel="canonical" href="https://gundam-organization.github.io/gundam-website/releases.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="releases">
+  <header class="site-header" id="site-header"></header>
+  <div class="site-layout">
+    <aside class="section-navigation" id="section-navigation"></aside>
+    <main class="main-content" id="main-content">
+      <div class="content-wrap">
+        <header class="page-hero">
+          <p class="page-kicker">Versioned software</p>
+          <h1>Releases</h1>
+          <p>Use tagged versions for analysis work, record the exact version with results, and review release notes before upgrading.</p>
+        </header>
+
+        <section class="content-section" id="latest">
+          <p class="eyebrow">Latest Release</p>
+          <h2>Get the current tagged version</h2>
+          <p>The GitHub Releases page is the authoritative source for the latest tag, release notes, assets, and comparison links.</p>
+          <div class="button-row">
+            <a class="button" href="https://github.com/gundam-organization/gundam/releases/latest" target="_blank" rel="noopener noreferrer">View latest release</a>
+            <a class="button secondary" href="https://github.com/gundam-organization/gundam/tags" target="_blank" rel="noopener noreferrer">Browse tags</a>
+          </div>
+        </section>
+
+        <section class="content-section" id="install-release">
+          <p class="eyebrow">Install a Release</p>
+          <h2>Let the update helper select the tag</h2>
+          <pre><code>cd "$REPO_DIR/gundam"
+./update.sh --latest</code></pre>
+          <p>The helper also updates the project submodules. Rebuild and rerun validation after changing versions.</p>
+        </section>
+
+        <section class="content-section" id="versioning">
+          <p class="eyebrow">Versioning</p>
+          <h2>Keep software and configuration compatible</h2>
+          <p>Configuration can declare <code>minGundamVersion</code>. GUNDAM stops when the active installation is older than that declared minimum, preventing a job from silently running without required behavior.</p>
+          <div class="callout"><p>A complete analysis record should include the GUNDAM version, submodule state, ROOT version, compiler, configuration, inputs, and exact execution command.</p></div>
+        </section>
+
+        <section class="content-section" id="history">
+          <p class="eyebrow">Release History</p>
+          <h2>Compare changes over time</h2>
+          <p>Use the release archive to identify fixes, new capabilities, configuration changes, and compatibility notes. Git tags provide stable points for reproducing earlier analyses.</p>
+          <div class="button-row"><a class="button secondary" href="https://github.com/gundam-organization/gundam/releases" target="_blank" rel="noopener noreferrer">Open release archive</a></div>
+        </section>
+
+        <section class="content-section" id="upgrade">
+          <p class="eyebrow">Upgrade Guidance</p>
+          <h2>Validate before adopting a new version</h2>
+          <ol class="steps">
+            <li><strong>Read release notes.</strong><br>Identify changes affecting configuration, numerical behavior, dependencies, or output.</li>
+            <li><strong>Build separately.</strong><br>Keep the validated installation available while testing the new release.</li>
+            <li><strong>Run a reference suite.</strong><br>Compare nominal, fit, uncertainty, and diagnostic outputs against an approved baseline.</li>
+            <li><strong>Record the transition.</strong><br>Document expected differences before using the new release for production results.</li>
+          </ol>
+        </section>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>

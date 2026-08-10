@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tutorial pathways and examples for GUNDAM users.">
+  <meta name="theme-color" content="#2d1d59">
+  <title>Tutorials | GUNDAM</title>
+  <link rel="canonical" href="https://gundam-organization.github.io/gundam-website/tutorials.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="tutorials">
+  <header class="site-header" id="site-header"></header>
+  <div class="site-layout">
+    <aside class="section-navigation" id="section-navigation"></aside>
+    <main class="main-content" id="main-content">
+      <div class="content-wrap">
+        <header class="page-hero">
+          <p class="page-kicker">Learn by doing</p>
+          <h1>Tutorials</h1>
+          <p>Move from a prepared input example to a configured fit, then inspect the outputs and refine the analysis.</p>
+        </header>
+
+        <section class="content-section" id="start">
+          <p class="eyebrow">Start Here</p>
+          <h2>A practical learning path</h2>
+          <ol class="steps">
+            <li><strong>Install a tagged release.</strong><br>Verify the GUNDAM applications are available in your shell.</li>
+            <li><strong>Clone the input tutorials.</strong><br>Begin with a maintained example instead of an analysis-specific configuration.</li>
+            <li><strong>Read the top-level configuration.</strong><br>Follow each included YAML file to understand the job structure.</li>
+            <li><strong>Run and inspect.</strong><br>Confirm the output, minimizer status, and post-fit diagnostics before modifying the model.</li>
+          </ol>
+        </section>
+
+        <section class="content-section" id="inputs">
+          <p class="eyebrow">Input Examples</p>
+          <h2>Start from maintained examples</h2>
+          <p>The official input-tutorial repository contains example configurations that can be copied into a separate working area and placed under version control with an analysis.</p>
+          <pre><code>git clone https://github.com/gundam-organization/gundam-input-tutorial.git
+cd gundam-input-tutorial</code></pre>
+          <div class="button-row"><a class="button secondary" href="https://github.com/gundam-organization/gundam-input-tutorial" target="_blank" rel="noopener noreferrer">Browse input tutorials</a></div>
+        </section>
+
+        <section class="content-section" id="configuration">
+          <p class="eyebrow">Configuration</p>
+          <h2>Compose the analysis from YAML</h2>
+          <p>GUNDAM reads YAML or JSON configuration. A string ending in <code>.yaml</code> can include another file relative to the current working directory, allowing large configurations to be separated by purpose.</p>
+          <pre><code>minGundamVersion: 2.0.0
+fitterEngineConfig:
+  minimizerConfig: "./minimizerConfig.yaml"
+  likelihoodInterfaceConfig: "./likelihoodConfig.yaml"</code></pre>
+          <p>Keep related blocks—such as the minimizer, likelihood, parameter sets, samples, and plot settings—in focused files with descriptive names.</p>
+        </section>
+
+        <section class="content-section" id="first-fit">
+          <p class="eyebrow">Run a First Fit</p>
+          <h2>Establish a known-good baseline</h2>
+          <p>Use the executable and command supplied by the selected tutorial. Before introducing analysis-specific changes, save the complete terminal output and confirm:</p>
+          <ul>
+            <li>all configuration includes resolve to the expected files;</li>
+            <li>input samples and parameter sets initialize successfully;</li>
+            <li>the minimizer reports a valid status;</li>
+            <li>the output ROOT file is created at the configured location; and</li>
+            <li>the post-fit point corresponds to a lower <span aria-label="minus two log likelihood">−2 log(L)</span> than the starting point.</li>
+          </ul>
+        </section>
+
+        <section class="content-section" id="diagnostics">
+          <p class="eyebrow">Fit Diagnostics</p>
+          <h2>Treat convergence as a physics diagnostic</h2>
+          <p>A non-converging fit is not automatically a software failure. Model parameterization, uncertainty correlations, discontinuities, weakly constrained directions, and input choices can produce a difficult likelihood surface.</p>
+          <div class="callout"><p>Inspect pre-fit and post-fit predictions, parameter pulls and constraints, covariance information, step-by-step minimizer output, and one- or two-dimensional likelihood scans where appropriate.</p></div>
+        </section>
+
+        <section class="content-section" id="advanced">
+          <p class="eyebrow">Advanced Workflows</p>
+          <h2>Scale from tutorial to analysis</h2>
+          <div class="card-grid">
+            <article class="card"><h3>Structured configuration</h3><p>Separate samples, systematics, parameter priors, and runtime settings into reviewable files.</p></article>
+            <article class="card"><h3>Reproducible environments</h3><p>Record the GUNDAM tag, ROOT build, compiler, inputs, and command used for every result.</p></article>
+            <article class="card"><h3>Validation suites</h3><p>Automate nominal fits, Asimov checks, parameter throws, and regression comparisons.</p></article>
+            <article class="card"><h3>Collaboration review</h3><p>Submit framework improvements through focused branches and pull requests with tests.</p></article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>
