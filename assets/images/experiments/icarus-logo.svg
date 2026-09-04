@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 210" role="img" aria-labelledby="title description">
+  <title id="title">ICARUS</title>
+  <desc id="description">ICARUS liquid-argon neutrino experiment wordmark</desc>
+  <path d="M58 124C126 38 213 34 278 90c31 27 55 34 89 17" fill="none" stroke="#ee6c2f" stroke-linecap="round" stroke-width="14"/>
+  <path d="M51 127c70-25 124-19 175 18" fill="none" stroke="#73a8cf" stroke-linecap="round" stroke-width="9"/>
+  <text x="292" y="126" fill="#153e68" font-family="Arial, Helvetica, sans-serif" font-size="94" font-weight="800" letter-spacing="4">ICARUS</text>
+  <text x="297" y="166" fill="#4f6578" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="4">LIQUID-ARGON NEUTRINO EXPERIMENT</text>
+</svg>
