@@ -114,7 +114,10 @@
       <div class="header-atmosphere" aria-hidden="true"></div>
       <div class="header-inner">
         <a class="brand" href="index.html" aria-label="GUNDAM home">
-          <span class="brand-wordmark">GUNDAM HIGH ENERGY PHYSICS</span>
+          <span class="brand-wordmark" aria-hidden="true">
+            <span class="brand-name">GUNDAM</span>
+            <span class="brand-descriptor">HIGH ENERGY PHYSICS</span>
+          </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
           <span class="nav-toggle-icon">${icon("menu")}</span>
