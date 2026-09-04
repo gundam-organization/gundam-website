@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Requirements and installation instructions for GUNDAM.">
+  <meta name="theme-color" content="#2d1d59">
+  <title>How to Install | GUNDAM</title>
+  <link rel="canonical" href="https://gundam-organization.github.io/gundam-website/install.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="install">
+  <header class="site-header" id="site-header"></header>
+  <div class="site-layout">
+    <aside class="section-navigation" id="section-navigation"></aside>
+    <main class="main-content" id="main-content">
+      <div class="content-wrap">
+        <header class="page-hero">
+          <p class="page-kicker">Getting started</p>
+          <h1>How to Install</h1>
+          <p>Build a tagged GUNDAM release with its submodules and connect it to your local ROOT environment.</p>
+        </header>
+
+        <section class="content-section" id="requirements">
+          <p class="eyebrow">Requirements</p>
+          <h2>Before you build</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Dependency</th><th>Requirement</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>CMake</td><td>3.12 or newer</td><td>Used to configure and generate the build.</td></tr>
+                <tr><td>C++ compiler</td><td>C++14 minimum; C++17 preferred</td><td>GCC 8+ or Clang 9+ is recommended.</td></tr>
+                <tr><td>ROOT</td><td>ROOT 6</td><td>Build ROOT with C++14 or a later standard compatible with GUNDAM.</td></tr>
+                <tr><td>JSON</td><td>JSON for Modern C++</td><td>Provided through the project dependency setup.</td></tr>
+                <tr><td>YAML</td><td>yaml-cpp</td><td>Used for configuration input.</td></tr>
+                <tr><td>Git</td><td>Modern Git recommended</td><td>Required for cloning and updating submodules.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="content-section" id="standard-build">
+          <p class="eyebrow">Standard Build</p>
+          <h2>Set up, compile, and install GUNDAM</h2>
+          <p>Use the standard CMake workflow below for a tagged GUNDAM release. The commands keep the source, build products, and installed files in separate directories so each can be managed independently.</p>
+
+          <h3>1. Define the working directories</h3>
+          <p>Choose where repositories, build products, and installed software will live. Add these exports to <code>~/.bashrc</code> on Linux or <code>~/.bash_profile</code> on macOS if you want them to be available in future shells.</p>
+          <pre><code># Adjust these paths to suit your system.
+export REPO_DIR="$HOME/Repositories"
+export BUILD_DIR="$HOME/Build"
+export INSTALL_DIR="$HOME/Install"
+
+# Create the directories the first time you use this layout.
+mkdir -p "$REPO_DIR" "$BUILD_DIR" "$INSTALL_DIR"</code></pre>
+
+          <h3>2. Clone the source and select a release</h3>
+          <p>Clone recursively so all required Git submodules are checked out with the main repository.</p>
+          <pre><code>cd "$REPO_DIR"
+git clone --recurse-submodules https://github.com/gundam-organization/gundam.git
+cd gundam
+
+# Recommended for analysis: select the latest tagged release
+# and synchronize its submodules.
+./update.sh --latest</code></pre>
+          <div class="callout"><p><strong>Release choice:</strong> Tagged versions are recommended for analysis work. Developers who need the current development branch can use <code>./update.sh --head</code> instead.</p></div>
+
+          <h3>3. Configure and build</h3>
+          <p>Make sure the intended ROOT environment is active before configuring GUNDAM. Then create a release build and install it under <code>$INSTALL_DIR/gundam</code>.</p>
+          <pre><code># If ROOT is not already configured in this shell, source its setup script.
+# source /path/to/root/bin/thisroot.sh
+
+# Configure an out-of-source release build.
+cmake -S "$REPO_DIR/gundam" \
+      -B "$BUILD_DIR/gundam" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR/gundam"
+
+# Compile using the available cores, then install.
+cmake --build "$BUILD_DIR/gundam" --parallel
+cmake --install "$BUILD_DIR/gundam"</code></pre>
+
+          <h3>4. Add GUNDAM to the shell environment</h3>
+          <p>Add the installed executables and libraries to the corresponding search paths:</p>
+          <pre><code>export PATH="$INSTALL_DIR/gundam/bin:$PATH"
+export LD_LIBRARY_PATH="$INSTALL_DIR/gundam/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"</code></pre>
+
+          <h3>Development helper scripts</h3>
+          <p>For development across feature branches or multiple machine-specific builds, the repository also provides optional setup and build helpers:</p>
+          <pre><code>cd "$REPO_DIR/gundam"
+
+# ROOT must already be available before running the helper.
+# source /path/to/root/bin/thisroot.sh
+
+# Source the setup helper to define GUNDAM_ROOT, a machine-specific
+# GUNDAM_TARGET, and the gundam-build command.
+source ./cmake/scripts/gundam-setup.sh
+
+# Compile and install using the helper's configured directories.
+gundam-build</code></pre>
+          <p>The setup helper uses a compiler- and machine-specific build directory by default. Set <code>GUNDAM_BUILD</code> or <code>GUNDAM_INSTALL</code> to override those locations, <code>GUNDAM_JOBS</code> to control parallelism, and <code>GUNDAM_CMAKE_DEFINES</code> for site-specific CMake options.</p>
+          <div class="callout"><p><strong>Choose one build method:</strong> The development helpers wrap the same CMake build described above. They are optional and are most useful when switching frequently between branches or build configurations.</p></div>
+        </section>
+
+        <section class="content-section" id="platform-guides">
+          <p class="eyebrow">Platform Guides</p>
+          <h2>Environment-specific instructions</h2>
+          <div class="link-grid platform-guide-grid">
+            <a class="link-card platform-guide-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnMacOs.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-logo"><img src="assets/images/platforms/macos-logo.png" alt="macOS"></div>
+              <div class="platform-guide-copy"><h3>macOS</h3><p>Compiler, ROOT, and local build guidance for macOS.</p><span class="link-label">Open guide</span></div>
+            </a>
+            <a class="link-card platform-guide-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnHpc.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-logo"><img src="assets/images/platforms/hpc-unige-logo.png" alt="University of Geneva HPC Facilities"></div>
+              <div class="platform-guide-copy"><h3>HPC — University of Geneva</h3><p>Environment and build guidance for the Geneva HPC facilities.</p><span class="link-label">Open guide</span></div>
+            </a>
+            <a class="link-card platform-guide-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnLXPLUS.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-logo"><img src="assets/images/platforms/lxplus-logo.png" alt="CERN Linux Public Login User Service"></div>
+              <div class="platform-guide-copy"><h3>lxplus</h3><p>Setup for the CERN Linux public login environment.</p><span class="link-label">Open guide</span></div>
+            </a>
+            <a class="link-card platform-guide-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnCCLyon.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-logo"><img src="assets/images/platforms/cc-in2p3-logo.png" alt="CC-IN2P3 and CNRS"></div>
+              <div class="platform-guide-copy"><h3>cc-in2p3</h3><p>Setup notes for the IN2P3 computing centre in Lyon.</p><span class="link-label">Open guide</span></div>
+            </a>
+            <a class="link-card platform-guide-card no-platform-logo" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnCedar.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-guide-copy"><h3>CEDAR</h3><p>Build guidance for the Digital Research Alliance of Canada cluster.</p><span class="link-label">Open guide</span></div>
+            </a>
+            <a class="link-card platform-guide-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnNNhome.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-logo compact-logo"><img src="assets/images/platforms/nn-group-logo.jpg" alt="Neutrino and Nucleon Decay Group"></div>
+              <div class="platform-guide-copy"><h3>NN group machine — SBU</h3><p>Setup for the Neutrino and Nucleon Decay group machine at Stony Brook.</p><span class="link-label">Open guide</span></div>
+            </a>
+            <a class="link-card platform-guide-card no-platform-logo" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnDUNEGPVM.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-guide-copy"><h3>dunegpvm</h3><p>Environment setup for the DUNE general-purpose virtual machines at Fermilab.</p><span class="link-label">Open guide</span></div>
+            </a>
+            <a class="link-card platform-guide-card" href="https://github.com/gundam-organization/gundam/blob/main/docs/guides/installOnSeawulfSBU.md" target="_blank" rel="noopener noreferrer">
+              <div class="platform-logo compact-logo"><img src="assets/images/platforms/seawulf-logo.png" alt="SeaWulf high-performance computing cluster"></div>
+              <div class="platform-guide-copy"><h3>SeaWulf — SBU</h3><p>Build guidance for Stony Brook University's SeaWulf HPC cluster.</p><span class="link-label">Open guide</span></div>
+            </a>
+          </div>
+        </section>
+
+        <section class="content-section" id="troubleshooting">
+          <p class="eyebrow">Troubleshooting</p>
+          <h2>Common installation checks</h2>
+          <ul>
+            <li>Confirm that <code>root-config --cflags</code> reports a C++ standard compatible with the GUNDAM build.</li>
+            <li>Run <code>git submodule update --init --recursive</code> if a dependency directory is missing.</li>
+            <li>Delete only the affected build directory—not the source tree—before retrying a clean CMake configure.</li>
+            <li>Include the compiler, ROOT version, CMake command, and complete error output when opening an issue.</li>
+          </ul>
+          <div class="button-row"><a class="button secondary" href="contact.html">Get support</a></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>
