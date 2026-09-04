@@ -167,14 +167,26 @@ select {
 }
 
 .brand-wordmark {
-  display: block;
+  display: flex;
+  gap: 0.28rem;
   color: var(--white);
-  font-size: 1.12rem;
-  font-weight: 850;
-  letter-spacing: 0.075em;
-  line-height: 1.2;
-  white-space: nowrap;
+  flex-direction: column;
+  line-height: 1;
   text-shadow: 0 2px 12px rgba(19, 12, 46, 0.28);
+}
+
+.brand-name {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.brand-descriptor {
+  color: var(--blue-300);
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.21em;
+  white-space: nowrap;
 }
 
 .primary-navigation {
@@ -939,9 +951,12 @@ tr:last-child td {
     min-width: 250px;
   }
 
-  .brand-wordmark {
-    font-size: 0.94rem;
-    letter-spacing: 0.055em;
+  .brand-name {
+    font-size: 1.72rem;
+  }
+
+  .brand-descriptor {
+    font-size: 0.59rem;
   }
 
   .primary-navigation > a {
