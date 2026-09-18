@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A guided overview of the official GUNDAM input tutorials, examples, and analysis workflows.">
+  <meta name="theme-color" content="#2d1d59">
+  <title>Tutorials | GUNDAM</title>
+  <link rel="canonical" href="https://gundam-organization.github.io/gundam-website/tutorials.html">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="tutorials">
+  <header class="site-header" id="site-header"></header>
+  <div class="site-layout">
+    <aside class="section-navigation" id="section-navigation"></aside>
+    <main class="main-content" id="main-content">
+      <div class="content-wrap">
+        <header class="page-hero">
+          <p class="page-kicker">Learn by doing</p>
+          <h1>Tutorials</h1>
+          <p>Follow the official input tutorial from a shared mock dataset through basic fits, extended parameter studies, and a modular analysis configuration.</p>
+          <div class="button-row">
+            <a class="button" href="https://github.com/gundam-organization/gundam-input-tutorial" target="_blank" rel="noopener noreferrer">Open the tutorial repository</a>
+            <a class="button secondary" href="install.html">Install GUNDAM first</a>
+          </div>
+        </header>
+
+        <section class="content-section" id="start">
+          <p class="eyebrow">Start Here</p>
+          <h2>Follow the examples in sequence</h2>
+          <p>The tutorial repository is designed as a progressive learning path. Use the website for orientation and follow the linked repository guides for commands, file contents, and exercises.</p>
+          <ol class="steps">
+            <li><strong>Prepare the environment.</strong><br>Install GUNDAM, clone the tutorial repository, and use its environment helper to make ROOT and <code>gundamFitter</code> available.</li>
+            <li><strong>Generate the shared mock dataset.</strong><br>All tutorial levels use the same reproducible ROOT input so the examples can focus on configuration changes.</li>
+            <li><strong>Complete the basic and extended examples.</strong><br>Build from dataset loading and event selection to normalization parameters, correlated uncertainties, response dials, and interpolation choices.</li>
+            <li><strong>Study the modular example.</strong><br>See how a larger analysis separates datasets, samples, parameters, plots, overrides, and the top-level fitter configuration.</li>
+          </ol>
+          <div class="button-row">
+            <a class="button secondary" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read the complete tutorial roadmap</a>
+            <a class="button secondary" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/env.sh" target="_blank" rel="noopener noreferrer">View the environment helper</a>
+          </div>
+        </section>
+
+        <section class="content-section" id="inputs">
+          <p class="eyebrow">Input Examples</p>
+          <h2>One dataset, several learning levels</h2>
+          <p>The repository supplies a mock ROOT dataset generator used by every basic, extended, and advanced example. The generated event tree contains example kinematic quantities, reaction and selection categories, event weights, and response functions for systematic parameters.</p>
+          <p>Using one shared input makes it easier to see how changes in selections, parameters, covariance information, and interpolation methods affect the configured analysis.</p>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/mockDatasetGen/README.md" target="_blank" rel="noopener noreferrer">
+              <h3>Mock dataset guide</h3>
+              <p>Learn what the shared event tree contains and how it supports the tutorial examples.</p>
+              <span class="link-label">Open the dataset guide</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/mockDatasetGen/buildInputRootFile.C" target="_blank" rel="noopener noreferrer">
+              <h3>Dataset generator</h3>
+              <p>Inspect the ROOT macro that creates the reproducible tutorial input.</p>
+              <span class="link-label">View the generator macro</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/tree/main/mockDatasetGen/plotting" target="_blank" rel="noopener noreferrer">
+              <h3>Plotting utilities</h3>
+              <p>Explore the macros for inspecting response functions and comparing interpolation behavior.</p>
+              <span class="link-label">Browse plotting tools</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="content-section" id="configuration">
+          <p class="eyebrow">Configuration</p>
+          <h2>Progress from flat to modular inputs</h2>
+          <p>The introductory packages keep each example self-contained: configuration files sit beside the small binning, selection, parameter, and covariance inputs they use. This makes individual concepts easy to isolate.</p>
+          <p>The advanced package demonstrates a production-style layout. A single top-level configuration references separate files for datasets, samples, parameters, plots, and optional overrides.</p>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/tree/main/example/basic" target="_blank" rel="noopener noreferrer">
+              <h3>Basic configuration</h3>
+              <p>Standalone examples for loading a dataset, applying a selection, and introducing a normalization parameter.</p>
+              <span class="link-label">Browse basic inputs</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/tree/main/example/extended" target="_blank" rel="noopener noreferrer">
+              <h3>Extended configuration</h3>
+              <p>Examples with multiple samples, multiple parameters, covariance inputs, response dials, and interpolation methods.</p>
+              <span class="link-label">Browse extended inputs</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/tree/main/example/advanced/simpleFit/inputs" target="_blank" rel="noopener noreferrer">
+              <h3>Modular configuration</h3>
+              <p>A structured input tree that separates the major responsibilities of a larger analysis.</p>
+              <span class="link-label">Browse modular inputs</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="content-section" id="first-fit">
+          <p class="eyebrow">Run a First Fit</p>
+          <h2>Build the first analysis one concept at a time</h2>
+          <p>The basic sequence starts by confirming that GUNDAM can read the dataset. It then adds an event selection, introduces a free normalization parameter, and finally moves from an Asimov study to a data-versus-model fit.</p>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/basic/B01_load_dataset.yaml" target="_blank" rel="noopener noreferrer">
+              <h3>1. Load the dataset</h3>
+              <p>Inspect the minimal dataset and sample definition before adding fit parameters.</p>
+              <span class="link-label">View the example</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/basic/B02_selection.yaml" target="_blank" rel="noopener noreferrer">
+              <h3>2. Apply a selection</h3>
+              <p>See how an event selection and local one-dimensional binning are introduced.</p>
+              <span class="link-label">View the example</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/basic/B03_normparam.yaml" target="_blank" rel="noopener noreferrer">
+              <h3>3. Add a parameter</h3>
+              <p>Introduce a free normalization parameter and perform the first simple fit.</p>
+              <span class="link-label">View the example</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/basic/B04_datafit.yaml" target="_blank" rel="noopener noreferrer">
+              <h3>4. Fit data</h3>
+              <p>Extend the configuration from an Asimov example to a data-versus-model fit.</p>
+              <span class="link-label">View the example</span>
+            </a>
+          </div>
+          <div class="button-row">
+            <a class="button secondary" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/basic/README.md" target="_blank" rel="noopener noreferrer">Read the Basic tutorial</a>
+          </div>
+        </section>
+
+        <section class="content-section" id="diagnostics">
+          <p class="eyebrow">Fit Diagnostics</p>
+          <h2>Study parameter response and correlations</h2>
+          <p>The extended examples show how a fit changes when it contains multiple selections, binned normalization parameters, correlated parameters driven by a covariance matrix, and event-by-event response functions.</p>
+          <p>A dedicated comparison applies natural-spline, not-a-knot spline, and piecewise-linear graph interpolation to the same deliberately non-smooth response. The repository includes plotting tools for examining these differences.</p>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/extended/README.md" target="_blank" rel="noopener noreferrer">
+              <h3>Extended tutorial</h3>
+              <p>Follow the complete progression through multiple samples, response dials, correlations, and interpolation choices.</p>
+              <span class="link-label">Read the Extended tutorial</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/extended/E03_response.yaml" target="_blank" rel="noopener noreferrer">
+              <h3>Response-dial example</h3>
+              <p>Inspect a configuration that reads a per-event response function.</p>
+              <span class="link-label">View the response example</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/extended/E04_correlated_normparam.yaml" target="_blank" rel="noopener noreferrer">
+              <h3>Correlated parameters</h3>
+              <p>See how parameter binning and an external covariance matrix are connected to a fit.</p>
+              <span class="link-label">View the correlation example</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/tree/main/mockDatasetGen/plotting" target="_blank" rel="noopener noreferrer">
+              <h3>Inspection macros</h3>
+              <p>Use the repository utilities to examine systematic responses and interpolation results.</p>
+              <span class="link-label">Browse diagnostic tools</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="content-section" id="advanced">
+          <p class="eyebrow">Advanced Workflows</p>
+          <h2>Move to a realistic modular analysis</h2>
+          <p>The advanced example uses one top-level configuration as the entry point to a hierarchy of dataset, sample, parameter, and plot definitions. It also demonstrates configuration overrides and repeated toy throws without duplicating the core analysis inputs.</p>
+          <div class="link-grid">
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/advanced/simpleFit/README.md" target="_blank" rel="noopener noreferrer">
+              <h3>Advanced tutorial</h3>
+              <p>Understand the purpose and organization of the complete modular example.</p>
+              <span class="link-label">Read the Advanced tutorial</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/advanced/simpleFit/mainConfig.yaml" target="_blank" rel="noopener noreferrer">
+              <h3>Top-level configuration</h3>
+              <p>See how the complete analysis is assembled from focused sub-configurations.</p>
+              <span class="link-label">View the entry point</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/tree/main/example/advanced/simpleFit/overrides" target="_blank" rel="noopener noreferrer">
+              <h3>Configuration overrides</h3>
+              <p>Review examples that adjust runtime behavior while preserving the main configuration.</p>
+              <span class="link-label">Browse overrides</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/example/advanced/simpleFit/run_toys.sh" target="_blank" rel="noopener noreferrer">
+              <h3>Toy workflow</h3>
+              <p>Inspect the provided workflow for running a reproducible series of toy experiments.</p>
+              <span class="link-label">View the toy script</span>
+            </a>
+            <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial/blob/main/README.md#dial-types-reference" target="_blank" rel="noopener noreferrer">
+              <h3>Dial reference</h3>
+              <p>Consult the repository reference for common and type-specific dial configuration options.</p>
+              <span class="link-label">Open the dial reference</span>
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer" id="site-footer"></footer>
+</body>
+</html>
