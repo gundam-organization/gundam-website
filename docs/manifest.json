@@ -1,0 +1,44 @@
+{
+  "groups": [
+    {
+      "title": "User Guide",
+      "pages": [
+        {
+          "id": "introduction",
+          "file": "introduction.md",
+          "title": "Introduction",
+          "description": "What GUNDAM is, and the list of GUNDAM releases."
+        },
+        {
+          "id": "run-gundam",
+          "file": "run-gundam.md",
+          "title": "Run GUNDAM",
+          "description": "Command-line usage and options for gundamFitter, gundamCalcXsec and the other applications."
+        }
+      ]
+    },
+    {
+      "title": "Configuration Reference",
+      "pages": [
+        {
+          "id": "configuration",
+          "file": "configuration.md",
+          "title": "Configuration File Reference",
+          "description": "Top-level options, the fitter engine, likelihood, propagator, datasets, samples and plotting."
+        },
+        {
+          "id": "parameters-and-dials",
+          "file": "parameters-and-dials.md",
+          "title": "Parameters and Dials",
+          "description": "Parameter sets, parameter definitions, and every dial type including tabulated and kriged dials."
+        },
+        {
+          "id": "minimizers",
+          "file": "minimizers.md",
+          "title": "Minimizer Configuration",
+          "description": "The minimizer interface, the ROOT minimizer, and the SimpleMcmc sampler with its sequences."
+        }
+      ]
+    }
+  ]
+}

@@ -34,6 +34,8 @@ jobs:
           mkdir -p _site
           cp ./*.html ./robots.txt ./sitemap.xml ./site.webmanifest _site/
           cp -R ./assets _site/
+          # Documentation pages (Markdown sources rendered by assets/js/docs.js)
+          cp -R ./docs _site/
           if [ -f CNAME ]; then cp CNAME _site/; fi
 
       - name: Upload static website

@@ -40,15 +40,9 @@
     },
     documentation: {
       href: "documentation.html",
-      label: "Documentation",
-      sections: [
-        ["user-guide", "User Guide"],
-        ["configuration-reference", "Configuration Reference"],
-        ["applications", "Applications"],
-        ["developers", "For Developers"],
-        ["faq", "FAQs"],
-        ["resources", "Resources"]
-      ]
+      label: "Documentation"
+      // No "sections": the documentation sidebar is built by assets/js/docs.js
+      // from docs/manifest.json.
     },
     collaboration: {
       href: "collaboration.html",
@@ -153,7 +147,7 @@
   function renderSideNavigation() {
     const host = document.getElementById("section-navigation");
     const page = pages[currentPage];
-    if (!host || !page) return;
+    if (!host || !page || !page.sections) return;
 
     host.innerHTML = `
       <div class="section-nav-inner">
