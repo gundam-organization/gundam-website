@@ -1,7 +1,7 @@
 /*
  * GUNDAM documentation viewer.
  *
- * documentation.html            -> landing page listing every section
+ * documentation.html            -> introduction to the documentation (static HTML)
  * documentation.html?page=<id>  -> renders docs/<file>.md as one scrollable page
  *
  * The list of sections lives in docs/manifest.json. The left bar lists those
@@ -91,23 +91,6 @@
     if (active && inner && inner.scrollWidth > inner.clientWidth) {
       inner.scrollLeft = active.offsetLeft - inner.clientWidth / 2 + active.offsetWidth / 2;
     }
-  }
-
-  /* ------------------------------------------------------------ landing page */
-
-  function renderLanding(manifest) {
-    const host = $("docs-landing-groups");
-    if (!host) return;
-    host.innerHTML = manifest.groups.map((group) => `
-      <h3 class="docs-landing-group">${escapeHtml(group.title)}</h3>
-      <div class="link-grid">
-        ${group.pages.map((page) => `
-          <a class="link-card" href="${pageHref(page.id)}">
-            <h3>${escapeHtml(page.title)}</h3>
-            <p>${escapeHtml(page.description || "")}</p>
-            <span class="link-label">Open section</span>
-          </a>`).join("")}
-      </div>`).join("");
   }
 
   /* ------------------------------------------------------------ section page */
@@ -499,16 +482,14 @@
       manifest = JSON.parse(await fetchText(MANIFEST_URL));
     } catch (error) {
       if (pageId) showError(error.message);
-      else if ($("docs-landing-groups")) $("docs-landing-groups").innerHTML = `<p>The section list could not be loaded (${escapeHtml(error.message)}).</p>`;
       return;
     }
     const pages = manifest.groups.flatMap((group) => group.pages.map((page) => ({ ...page, group: group.title })));
     const current = pageId ? pages.find((page) => page.id === pageId) : null;
 
     renderSectionNav(manifest, current);
-    if (!pageId) {
-      renderLanding(manifest);
-    } else if (!current) {
+    if (!pageId) return; // the landing page is static HTML in documentation.html
+    if (!current) {
       renderNotFound(pageId);
     } else {
       await renderPage(current, pages);

@@ -1361,7 +1361,7 @@ html:not(.docs-has-page) .docs-section-page {
   font-size: 0.98rem;
 }
 
-/* Section hero + landing ------------------------------------------------- */
+/* Section hero + landing (introduction to the documentation) -------------- */
 
 .docs-hero {
   padding-bottom: 2.2rem;
@@ -1371,12 +1371,86 @@ html:not(.docs-has-page) .docs-section-page {
   font-size: clamp(2.3rem, 4vw, 3.5rem);
 }
 
-.docs-landing .docs-landing-group {
-  margin: 2.4rem 0 0;
+.docs-intro {
+  max-width: 790px;
+  padding-top: 2.6rem;
 }
 
-.docs-landing .docs-landing-group + .link-grid {
-  margin-top: 1rem;
+.docs-intro p {
+  margin: 0 0 1rem;
+  font-size: 1.08rem;
+}
+
+.docs-part > p:not(.eyebrow) {
+  color: #514d63;
+  font-size: 1.1rem;
+}
+
+.content-section .docs-chapters {
+  max-width: 880px;
+  margin: 1.8rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.content-section .docs-chapter {
+  position: relative;
+  margin: 0;
+  padding: 1.35rem 3.2rem 1.4rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.docs-chapter:hover,
+.docs-chapter:focus-within {
+  background: rgba(104, 83, 177, 0.06);
+  border-left-color: var(--accent);
+}
+
+.content-section .docs-chapter h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.28rem;
+}
+
+.docs-chapter h3 a {
+  color: var(--violet-800);
+  text-decoration: none;
+}
+
+/* The whole row is clickable, not just the title. */
+.docs-chapter h3 a::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.docs-chapter p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.docs-chapter > svg {
+  position: absolute;
+  top: 50%;
+  right: 1.1rem;
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transform: translateY(-50%);
+  transition: transform 150ms ease;
+}
+
+.docs-chapter:hover > svg {
+  transform: translate(3px, -50%);
 }
 
 .docs-loading {
@@ -1839,6 +1913,14 @@ html:not(.docs-has-page) .docs-section-page {
 }
 
 @media (max-width: 640px) {
+  .content-section .docs-chapter {
+    padding: 1.1rem 2.4rem 1.2rem 0.9rem;
+  }
+
+  .docs-chapter > svg {
+    right: 0.6rem;
+  }
+
   .docs-wrap {
     width: min(100% - 32px, 1240px);
     padding-top: 3rem;

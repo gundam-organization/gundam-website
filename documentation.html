@@ -28,30 +28,61 @@
         <article class="docs-article">
 
           <!-- Landing view: documentation.html -->
+          <!-- When a chapter is added to docs/manifest.json, add its introduction below too. -->
           <div class="docs-landing" id="docs-landing">
             <header class="page-hero">
               <p class="page-kicker">Reference</p>
-              <h1>Documentation</h1>
-              <p>Everything you need to configure and run GUNDAM. Each section is one scrollable page; use the bar on the right of a section to jump straight to any part of it.</p>
+              <h1>GUNDAM Documentation</h1>
+              <p>The GUNDAM documentation provides detailed information about the use and applications of GUNDAM, the Generalized and Unified Neutrino Data Analysis Methods: a suite of applications for statistical analyses in neutrino physics, from fitting model parameters to experimental or simulated data to calculating cross sections from the fit results.</p>
             </header>
 
-            <section class="content-section" id="sections">
-              <p class="eyebrow">Sections</p>
-              <h2>Browse the manual</h2>
-              <div id="docs-landing-groups"></div>
+            <div class="docs-intro">
+              <p>A GUNDAM job is set up entirely through YAML or JSON configuration files, so a new study rarely requires touching the code. Most of this documentation therefore explains what each part of a configuration file does and which options it accepts.</p>
+              <p>Each chapter is a single scrollable page. Use the chapter list on the left to move between chapters, and the <strong>On this page</strong> list on the right of a chapter to jump straight to any of its sub-sections. On smaller screens, the chapter list sits at the top of the page and <strong>On this page</strong> opens from a floating button.</p>
               <noscript>
-                <p>JavaScript is needed to display the documentation pages. You can read the Markdown sources directly in the <a href="https://github.com/gundam-organization/gundam-website/tree/main/docs">docs folder on GitHub</a>.</p>
+                <p>JavaScript is needed to display the chapters. You can read the Markdown sources directly in the <a href="https://github.com/gundam-organization/gundam-website/tree/main/docs">docs folder on GitHub</a>.</p>
               </noscript>
-              <div class="callout"><p><strong>Version discipline:</strong> Always match documentation to the installed GUNDAM tag, because command-line options and configuration fields can evolve between releases. Record the exact release or commit SHA in analysis notes and generated artifacts.</p></div>
+            </div>
+
+            <section class="content-section docs-part" id="user-guide">
+              <p class="eyebrow">Part 1</p>
+              <h2>User Guide</h2>
+              <p>The first part of the documentation introduces GUNDAM and shows how to run its applications.</p>
+              <ul class="docs-chapters">
+                <li class="docs-chapter">
+                  <h3><a href="documentation.html?page=introduction">Introduction</a></h3>
+                  <p>What GUNDAM is, where it comes from, and why it is driven by configuration files, together with the list of GUNDAM releases, each linked to its release page.</p>
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                </li>
+                <li class="docs-chapter">
+                  <h3><a href="documentation.html?page=run-gundam">Run GUNDAM</a></h3>
+                  <p>How to launch the GUNDAM applications from the command line. It covers <code>gundamFitter</code>, which fits the model parameters to data, and <code>gundamCalcXsec</code>, which calculates cross sections from a <code>gundamFitter</code> output, with their command-line and trigger options. It then describes the helper applications for comparing and unfolding configuration files, reading, comparing and plotting fit results, packaging inputs, and working interactively in ROOT.</p>
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                </li>
+              </ul>
             </section>
 
-            <section class="content-section" id="resources">
-              <p class="eyebrow">Resources</p>
-              <h2>Source-controlled supporting material</h2>
-              <div class="link-grid">
-                <a class="link-card" href="https://github.com/gundam-organization/gundam/tree/main/resources" target="_blank" rel="noopener noreferrer"><h3>Repository Resources</h3><p>Examples, images, and supporting material distributed with the code.</p><span class="link-label">Browse resources</span></a>
-                <a class="link-card" href="https://github.com/gundam-organization/gundam-input-tutorial" target="_blank" rel="noopener noreferrer"><h3>Input Tutorials</h3><p>Maintained example inputs for learning and validation.</p><span class="link-label">Browse tutorials</span></a>
-              </div>
+            <section class="content-section docs-part" id="configuration-reference">
+              <p class="eyebrow">Part 2</p>
+              <h2>Configuration Reference</h2>
+              <p>The second part describes every configuration option, following the structure of a configuration file from the top level down.</p>
+              <ul class="docs-chapters">
+                <li class="docs-chapter">
+                  <h3><a href="documentation.html?page=configuration">Configuration File Reference</a></h3>
+                  <p>How to split a configuration into several included YAML files, the top-level options, and the blocks that make up a fit: the fitter engine, the likelihood interface, the propagator, datasets, samples, the plot generator, the event tree writer and the parameter scanner.</p>
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                </li>
+                <li class="docs-chapter">
+                  <h3><a href="documentation.html?page=parameters-and-dials">Parameters and Dials</a></h3>
+                  <p>How fit parameters are organized into parameter sets, which can share a prior covariance matrix and be eigen-decomposed; how each parameter is defined; and how dials turn parameter values into event weights. Every dial type is covered (normalization, spline, graph, surface, formula, tabulated and kriged), including the external-library interface used by tabulated and kriged dials.</p>
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                </li>
+                <li class="docs-chapter">
+                  <h3><a href="documentation.html?page=minimizers">Minimizer Configuration</a></h3>
+                  <p>How to choose between a maximum-likelihood fit with the ROOT minimizer (Minuit2 by default, with HESSE or MINOS errors) and Bayesian posterior sampling with SimpleMcmc, an adaptive Metropolis&ndash;Hastings chain, including how to write custom burn-in sequences.</p>
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+                </li>
+              </ul>
             </section>
           </div>
 

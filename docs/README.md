@@ -23,6 +23,11 @@ Pages and their order in the left bar come from `manifest.json`. To add a
 page, create `<name>.md` here and add an entry with a unique `id`, the `file`
 name, a `title`, and a one-line `description` to one of the groups.
 
+The documentation home page (`documentation.html` without `?page=`) is an
+introduction with a short paragraph about each chapter. It is plain HTML, so
+when you add, rename or remove a chapter, update its entry in the
+`docs-chapters` lists in `documentation.html` as well.
+
 ## Local preview
 
 Run `npm run dev` from the repository root and open
