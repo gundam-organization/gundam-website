@@ -861,6 +861,56 @@ tr:last-child td {
   letter-spacing: 0.03em;
 }
 
+/* Collaboration members (collaboration.html#members) */
+.content-section .member-grid {
+  display: grid;
+  max-width: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  list-style: none;
+}
+
+.content-section .member {
+  display: flex;
+  margin: 0;
+  padding: 1.7rem 1.25rem 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+/* Empty circle for now; the same class styles an <img> once photos are added. */
+.member-photo {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin-bottom: 1.1rem;
+  object-fit: cover;
+  background: linear-gradient(135deg, var(--blue-50), var(--blue-100));
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+
+.content-section .member-name {
+  margin: 0;
+  color: var(--blue-800);
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+.member-affiliation {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
 .site-footer {
   color: rgba(255, 255, 255, 0.78);
   background: var(--blue-900);
@@ -1128,6 +1178,29 @@ tr:last-child td {
 @media (max-width: 640px) {
   body {
     font-size: 16px;
+  }
+
+  .content-section .member-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .content-section .member {
+    padding: 1.2rem 0.8rem 1.1rem;
+  }
+
+  .member-photo {
+    width: 84px;
+    height: 84px;
+    margin-bottom: 0.8rem;
+  }
+
+  .content-section .member-name {
+    font-size: 1rem;
+  }
+
+  .member-affiliation {
+    font-size: 0.84rem;
   }
 
   .header-inner {

@@ -49,6 +49,7 @@
       label: "Collaboration",
       sections: [
         ["mission", "Mission"],
+        ["members", "Members"],
         ["participation", "Participation"],
         ["contributors", "Contributors"],
         ["development", "Development Policy"],
