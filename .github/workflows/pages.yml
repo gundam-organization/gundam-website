@@ -14,7 +14,7 @@ on:
     inputs:
       gundam_repo:
         description: "GUNDAM repository to build the code reference from"
-        default: "gundam-organization/gundam"
+        default: "sjoshi131/gundam"
       gundam_ref:
         description: "Branch, tag or commit of that repository"
         default: "main"
@@ -31,7 +31,7 @@ concurrency:
 env:
   # Source of the code reference published under /api. Manual runs can pick
   # another repository or branch (for example a fork, to preview a change).
-  GUNDAM_REPO: ${{ inputs.gundam_repo || 'gundam-organization/gundam' }}
+  GUNDAM_REPO: ${{ inputs.gundam_repo || 'sjoshi131/gundam' }}
   GUNDAM_REF: ${{ inputs.gundam_ref || github.event.client_payload.ref || 'main' }}
 
 jobs:
