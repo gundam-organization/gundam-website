@@ -1,0 +1,14 @@
+/* Website look for the Doxygen code reference (api/). Loaded after
+   Doxygen's own stylesheet through HTML_EXTRA_STYLESHEET. */
+@font-face {
+  font-family: "Open Sans";
+  src: url("../assets/fonts/open-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 300 800;
+  font-display: swap;
+}
+body, table, div, p, dl, #projectbrief, #projectnumber {
+  font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+/* The logo file is 2000 px wide; show it at header height. */
+#projectlogo img { max-height: 44px; width: auto; }
+#projectname { font-weight: 700; }

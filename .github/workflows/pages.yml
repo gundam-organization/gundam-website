@@ -4,7 +4,20 @@ on:
   push:
     branches:
       - main
+  # Rebuild every night so the code reference follows the GUNDAM main branch.
+  schedule:
+    - cron: "17 4 * * *"
+  # Rebuild right away when the GUNDAM repository asks for it (see README.md).
+  repository_dispatch:
+    types: [gundam-code-updated]
   workflow_dispatch:
+    inputs:
+      gundam_repo:
+        description: "GUNDAM repository to build the code reference from"
+        default: "gundam-organization/gundam"
+      gundam_ref:
+        description: "Branch, tag or commit of that repository"
+        default: "main"
 
 permissions:
   contents: read
@@ -14,6 +27,12 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: true
+
+env:
+  # Source of the code reference published under /api. Manual runs can pick
+  # another repository or branch (for example a fork, to preview a change).
+  GUNDAM_REPO: ${{ inputs.gundam_repo || 'gundam-organization/gundam' }}
+  GUNDAM_REF: ${{ inputs.gundam_ref || github.event.client_payload.ref || 'main' }}
 
 jobs:
   deploy:
@@ -37,6 +56,24 @@ jobs:
           # Documentation pages (Markdown sources rendered by assets/js/docs.js)
           cp -R ./docs _site/
           if [ -f CNAME ]; then cp CNAME _site/; fi
+
+      # Code reference: the commented sources stay in the GUNDAM repository;
+      # only the HTML that Doxygen generates from them is published here.
+      - name: Check out GUNDAM sources
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ env.GUNDAM_REPO }}
+          ref: ${{ env.GUNDAM_REF }}
+          path: gundam-src
+          fetch-depth: 0   # full history, so `git describe` can name the version
+
+      - name: Install Doxygen and Graphviz
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq doxygen graphviz
+
+      - name: Build code reference
+        run: scripts/build-api-docs.sh gundam-src _site/api
 
       - name: Upload static website
         uses: actions/upload-pages-artifact@v4

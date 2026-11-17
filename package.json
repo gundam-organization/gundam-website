@@ -4,6 +4,7 @@
   "private": true,
   "description": "Static GitHub Pages website for the GUNDAM collaboration",
   "scripts": {
-    "dev": "python3 scripts/dev-server.py"
+    "dev": "python3 scripts/dev-server.py",
+    "api-docs": "bash scripts/build-api-docs.sh ../gundam api"
   }
 }

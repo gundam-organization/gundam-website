@@ -1,0 +1,280 @@
+diff --git a/.github/workflows/pages.yml b/.github/workflows/pages.yml
+index 23d93b3..2796095 100644
+--- a/.github/workflows/pages.yml
++++ b/.github/workflows/pages.yml
+@@ -4,7 +4,20 @@ on:
+   push:
+     branches:
+       - main
++  # Rebuild every night so the code reference follows the GUNDAM main branch.
++  schedule:
++    - cron: "17 4 * * *"
++  # Rebuild right away when the GUNDAM repository asks for it (see README.md).
++  repository_dispatch:
++    types: [gundam-code-updated]
+   workflow_dispatch:
++    inputs:
++      gundam_repo:
++        description: "GUNDAM repository to build the code reference from"
++        default: "gundam-organization/gundam"
++      gundam_ref:
++        description: "Branch, tag or commit of that repository"
++        default: "main"
+ 
+ permissions:
+   contents: read
+@@ -15,6 +28,12 @@ concurrency:
+   group: pages
+   cancel-in-progress: true
+ 
++env:
++  # Source of the code reference published under /api. Manual runs can pick
++  # another repository or branch (for example a fork, to preview a change).
++  GUNDAM_REPO: ${{ inputs.gundam_repo || 'gundam-organization/gundam' }}
++  GUNDAM_REF: ${{ inputs.gundam_ref || github.event.client_payload.ref || 'main' }}
++
+ jobs:
+   deploy:
+     environment:
+@@ -38,6 +57,24 @@ jobs:
+           cp -R ./docs _site/
+           if [ -f CNAME ]; then cp CNAME _site/; fi
+ 
++      # Code reference: the commented sources stay in the GUNDAM repository;
++      # only the HTML that Doxygen generates from them is published here.
++      - name: Check out GUNDAM sources
++        uses: actions/checkout@v6
++        with:
++          repository: ${{ env.GUNDAM_REPO }}
++          ref: ${{ env.GUNDAM_REF }}
++          path: gundam-src
++          fetch-depth: 0   # full history, so `git describe` can name the version
++
++      - name: Install Doxygen and Graphviz
++        run: |
++          sudo apt-get update -qq
++          sudo apt-get install -y -qq doxygen graphviz
++
++      - name: Build code reference
++        run: scripts/build-api-docs.sh gundam-src _site/api
++
+       - name: Upload static website
+         uses: actions/upload-pages-artifact@v4
+         with:
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..8ad8011
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,2 @@
++# Local preview of the code reference (scripts/build-api-docs.sh)
++api/
+diff --git a/api-docs/doxygen-extra.css b/api-docs/doxygen-extra.css
+new file mode 100644
+index 0000000..4e4b487
+--- /dev/null
++++ b/api-docs/doxygen-extra.css
+@@ -0,0 +1,14 @@
++/* Website look for the Doxygen code reference (api/). Loaded after
++   Doxygen's own stylesheet through HTML_EXTRA_STYLESHEET. */
++@font-face {
++  font-family: "Open Sans";
++  src: url("../assets/fonts/open-sans-latin-wght-normal.woff2") format("woff2");
++  font-weight: 300 800;
++  font-display: swap;
++}
++body, table, div, p, dl, #projectbrief, #projectnumber {
++  font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
++}
++/* The logo file is 2000 px wide; show it at header height. */
++#projectlogo img { max-height: 44px; width: auto; }
++#projectname { font-weight: 700; }
+diff --git a/api-docs/doxygen-site.conf b/api-docs/doxygen-site.conf
+new file mode 100644
+index 0000000..3e499cc
+--- /dev/null
++++ b/api-docs/doxygen-site.conf
+@@ -0,0 +1,10 @@
++# Website-only Doxygen settings, appended after gundam's docs/doxygen/Doxyfile
++# by scripts/build-api-docs.sh. @SITE_DIR@ is replaced by the website folder.
++# Keep content settings (what to document, warnings) in the gundam repository.
++
++PROJECT_LOGO           = @SITE_DIR@/assets/images/gundam-logo.png
++HTML_EXTRA_STYLESHEET  = @SITE_DIR@/api-docs/doxygen-extra.css
++HTML_COLORSTYLE_HUE    = 213
++HTML_COLORSTYLE_SAT    = 120
++HTML_COLORSTYLE_GAMMA  = 80
++QUIET                  = YES
+diff --git a/api-docs/placeholder.html b/api-docs/placeholder.html
+new file mode 100644
+index 0000000..b7a1f57
+--- /dev/null
++++ b/api-docs/placeholder.html
+@@ -0,0 +1,16 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++  <meta charset="utf-8">
++  <meta name="viewport" content="width=device-width, initial-scale=1">
++  <title>Code Reference | GUNDAM</title>
++  <link rel="stylesheet" href="../assets/css/styles.css">
++</head>
++<body>
++  <main class="main-content" style="max-width:46rem;margin:4rem auto;padding:0 1rem">
++    <h1>Code Reference</h1>
++    <p>The code reference is generated with Doxygen from the comments in the GUNDAM source code. It is not available in this build yet, because the GUNDAM branch the website was built from has no <code>docs/doxygen/Doxyfile</code>.</p>
++    <p><a href="../documentation.html">Back to the documentation</a></p>
++  </main>
++</body>
++</html>
+diff --git a/docs/README.md b/docs/README.md
+index 56d0cbb..d0aad42 100644
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -33,3 +33,26 @@ when you add, rename or remove a chapter, update its entry in the
+ Run `npm run dev` from the repository root and open
+ <http://localhost:4173/documentation.html>. Opening the HTML file directly from
+ disk does not work, because browsers block `fetch()` on `file://` pages.
++
++## Code reference (Doxygen)
++
++The **Code Reference** part of the documentation (`api/`) is not written here.
++It is generated by Doxygen from the comments in the GUNDAM source code, using
++the configuration in the GUNDAM repository (`docs/doxygen/Doxyfile`). Only the
++generated HTML is published; nothing generated is committed to either
++repository.
++
++- `.github/workflows/pages.yml` checks out the GUNDAM repository next to this
++  one and runs `scripts/build-api-docs.sh`, which writes the HTML into
++  `_site/api` before the site is deployed.
++- The site is rebuilt on every push here, every night, when the GUNDAM
++  repository sends a `gundam-code-updated` event, and on demand from the
++  Actions tab ("Run workflow"), where you can also pick another GUNDAM
++  repository or branch to preview.
++- `api-docs/` holds the website-only settings: logo, colours, extra CSS, and
++  the placeholder page used when the GUNDAM branch has no Doxyfile yet.
++
++To preview it locally, install Doxygen and Graphviz, clone GUNDAM next to this
++repository (`../gundam`), then run `npm run api-docs` followed by `npm run dev`
++and open <http://localhost:4173/api/index.html>. The `api/` folder is ignored by
++git.
+diff --git a/documentation.html b/documentation.html
+index 59b91e4..1583049 100644
+--- a/documentation.html
++++ b/documentation.html
+@@ -83,6 +83,26 @@
+                 </li>
+               </ul>
+             </section>
++
++            <!-- Part 3 links to the Doxygen code reference that .github/workflows/pages.yml
++                 builds from the GUNDAM sources into api/. It is not a Markdown chapter. -->
++            <section class="content-section docs-part" id="code-reference">
++              <p class="eyebrow">Part 3</p>
++              <h2>Code Reference</h2>
++              <p>The third part is for developers. It is generated with Doxygen from the comments in the GUNDAM source code and rebuilt every night from the main branch.</p>
++              <ul class="docs-chapters">
++                <li class="docs-chapter">
++                  <h3><a href="api/index.html">Code Reference</a></h3>
++                  <p>Every documented class, function and member variable of the GUNDAM libraries, grouped by module, with inheritance and collaboration diagrams and links to the annotated source.</p>
++                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
++                </li>
++                <li class="docs-chapter">
++                  <h3><a href="api/group__DialDictionary.html">Dial Dictionary</a></h3>
++                  <p>The dials that turn parameter values into event weights: the dial types, the collections that group them, the event-to-dial cache, and the factories for tabulated and kriged dials.</p>
++                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
++                </li>
++              </ul>
++            </section>
+           </div>
+ 
+           <!-- Section view: documentation.html?page=<id> -->
+diff --git a/package.json b/package.json
+index 1c28b22..bf2e65a 100644
+--- a/package.json
++++ b/package.json
+@@ -4,6 +4,7 @@
+   "private": true,
+   "description": "Static GitHub Pages website for the GUNDAM collaboration",
+   "scripts": {
+-    "dev": "python3 scripts/dev-server.py"
++    "dev": "python3 scripts/dev-server.py",
++    "api-docs": "bash scripts/build-api-docs.sh ../gundam api"
+   }
+ }
+diff --git a/scripts/build-api-docs.sh b/scripts/build-api-docs.sh
+new file mode 100755
+index 0000000..54c83ae
+--- /dev/null
++++ b/scripts/build-api-docs.sh
+@@ -0,0 +1,58 @@
++#!/usr/bin/env bash
++# Builds the GUNDAM code reference (Doxygen) and puts it in a folder of the
++# website. Used by .github/workflows/pages.yml and for local previews.
++#
++# Usage: scripts/build-api-docs.sh <path to a gundam checkout> <output folder>
++#   e.g. scripts/build-api-docs.sh ../gundam api      (local preview)
++#        scripts/build-api-docs.sh gundam-src _site/api   (CI)
++#
++# The Doxygen configuration itself lives in the gundam repository
++# (docs/doxygen/Doxyfile); api-docs/doxygen-site.conf only adds the website's
++# look (logo, colours) and the output location. If the checkout has no
++# Doxyfile yet, a placeholder page is written instead so the site still builds.
++set -euo pipefail
++
++GUNDAM_DIR=$(cd "${1:?path to a gundam checkout}" && pwd)
++OUT_DIR=${2:?output folder}
++SITE_DIR=$(cd "$(dirname "$0")/.." && pwd)
++DOXY_DIR="$GUNDAM_DIR/docs/doxygen"
++
++rm -rf "$OUT_DIR"
++mkdir -p "$OUT_DIR"
++
++if [ ! -f "$DOXY_DIR/Doxyfile" ]; then
++  echo "No docs/doxygen/Doxyfile in $GUNDAM_DIR: writing a placeholder page." >&2
++  cp "$SITE_DIR/api-docs/placeholder.html" "$OUT_DIR/index.html"
++  exit 0
++fi
++
++command -v doxygen >/dev/null || { echo "doxygen is not installed" >&2; exit 1; }
++
++# Version shown next to the project name, e.g. "1.8.6-23-g8f2ce4c".
++VERSION=$(git -C "$GUNDAM_DIR" describe --tags --always 2>/dev/null || echo "unknown")
++BUILD=$(mktemp -d)
++trap 'rm -rf "$BUILD"' EXIT
++
++# Doxygen reads its configuration from stdin ("-"); later lines override
++# earlier ones. Relative paths in the Doxyfile resolve from docs/doxygen.
++(
++  cd "$DOXY_DIR"
++  {
++    cat Doxyfile
++    sed "s#@SITE_DIR@#$SITE_DIR#g" "$SITE_DIR/api-docs/doxygen-site.conf"
++    echo "PROJECT_NUMBER   = \"$VERSION\""
++    echo "OUTPUT_DIRECTORY = $BUILD"
++    echo "HTML_OUTPUT      = html"
++    echo "WARN_LOGFILE     = $BUILD/warnings.log"
++  } | doxygen -
++)
++
++cp -R "$BUILD/html/." "$OUT_DIR/"
++NWARN=$(grep -c . "$BUILD/warnings.log" 2>/dev/null || true)
++echo "Code reference for $VERSION written to $OUT_DIR ($(find "$OUT_DIR" -type f | wc -l) files, ${NWARN:-0} Doxygen warnings)."
++if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
++  {
++    echo "### Code reference"
++    echo "Built from \`$(git -C "$GUNDAM_DIR" remote get-url origin 2>/dev/null || echo "$GUNDAM_DIR")\` at \`$VERSION\` with ${NWARN:-0} Doxygen warnings."
++  } >> "$GITHUB_STEP_SUMMARY"
++fi
+diff --git a/sitemap.xml b/sitemap.xml
+index 91c0c24..c6be904 100644
+--- a/sitemap.xml
++++ b/sitemap.xml
+@@ -9,6 +9,7 @@
+   <url><loc>https://gundam-organization.github.io/gundam-website/documentation.html?page=configuration</loc></url>
+   <url><loc>https://gundam-organization.github.io/gundam-website/documentation.html?page=parameters-and-dials</loc></url>
+   <url><loc>https://gundam-organization.github.io/gundam-website/documentation.html?page=minimizers</loc></url>
++  <url><loc>https://gundam-organization.github.io/gundam-website/api/index.html</loc></url>
+   <url><loc>https://gundam-organization.github.io/gundam-website/collaboration.html</loc></url>
+   <url><loc>https://gundam-organization.github.io/gundam-website/contact.html</loc></url>
+   <url><loc>https://gundam-organization.github.io/gundam-website/releases.html</loc></url>
