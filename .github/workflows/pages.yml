@@ -35,10 +35,8 @@ env:
   GUNDAM_REF: ${{ inputs.gundam_ref || github.event.client_payload.ref || 'main' }}
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # Build the site and upload it as the "github-pages" artifact.
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +44,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Assemble static website
         run: |
@@ -80,6 +78,30 @@ jobs:
         with:
           path: _site
 
+  # Publish the uploaded artifact. This runs as a separate job, after the
+  # upload has finished, because deploy-pages sometimes looked for the
+  # artifact in the same second it was uploaded and failed with 'No artifacts
+  # named "github-pages" were found'. If a deployment still fails, it is
+  # retried once after a minute; "Re-run failed jobs" then re-runs only this
+  # job and reuses the uploaded site.
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment-retry.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Deploy GitHub Pages site
         id: deployment
-        uses: actions/deploy-pages@v4
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      - name: Wait before retrying
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 60
+
+      - name: Deploy GitHub Pages site (retry)
+        id: deployment-retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v5
